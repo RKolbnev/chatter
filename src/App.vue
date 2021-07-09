@@ -1,13 +1,13 @@
 <template>
-  <app-reg></app-reg>
+  <app-header></app-header>
 </template>
 
 <script>
-import Registration from './views/Registration.vue'
+import AppHeader from './components/AppHeader'
 
 export default {
   components: {
-    'app-reg': Registration
+    'app-header': AppHeader
   },
   data () {
     return {
