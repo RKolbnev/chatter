@@ -1,0 +1,82 @@
+.border-top
+  border-top-left-radius: 0.5rem
+  border-top-right-radius: 0.5rem
+
+.user
+  display: flex
+  flex-direction: column
+  width: stretch
+  max-width: 60rem
+  min-width: 40rem
+  height: fit-content
+  margin: auto
+  margin-top: 8vh
+
+
+.info
+  position: relative
+  width: stretch
+  height: 20rem
+  padding-bottom: 1rem
+  background-color: $white
+  &__bg
+    overflow: hidden
+    width: stretch
+    height: 15rem
+    background-color: red
+    & i
+      cursor: pointer
+      position: absolute
+      top: 0.5rem
+      right: 0.5rem
+      padding: 0.3rem
+      border-radius: 0.2rem
+      color: $black
+      background-color: $white
+      font-size: 1.2rem
+      opacity: 0.8
+      &:hover
+        opacity: 1
+  &__main
+    cursor: pointer
+    position: absolute
+    transform: translateY(-50%)
+    overflow: hidden
+    width: 10rem
+    height: 10rem
+    margin-left: 2rem
+    border: 2px solid $grey
+    border-radius: 5rem
+    background-color: green
+  &__name
+    font-size: 1.7rem
+    margin-top: 2rem
+    margin-left: 15rem
+    & i
+      cursor: pointer
+      height: 100%
+      transform: translateY(-60%)
+      font-size: 1rem
+
+.wall
+  padding: 1rem
+  margin-top: 1rem
+  background-color: $white
+  &-add
+    display: flex
+    align-items: flex-end
+    padding: 0.5rem
+    margin-bottom: 0.5rem
+    border: 1px solid $light-blue
+    border-radius: 0.5rem
+    outline: none
+    font-size: 1rem
+    background-color: transparent
+    &:hover
+      color: $white
+      background-color: darken($light-blue, 10%)
+    & i
+      font-size: 1.2rem
+      margin-right: 0.5rem
+
+

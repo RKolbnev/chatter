@@ -5,8 +5,13 @@
       <span>Chatter</span>
     </div>
     <div class="header-btn">
-      <div>Сообщения</div>
-      <div>Пользователь</div>
+      <div>
+        <span>0</span>
+        <i class="fa fa-envelope" aria-hidden="true"></i>
+      </div>
+      <div @click="$router.push('/user')">
+        <i class="fa fa-user-circle" aria-hidden="true"></i>
+      </div>
     </div>
   </header>
 </template>
