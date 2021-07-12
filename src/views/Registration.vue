@@ -1,5 +1,5 @@
 <template>
-  <div class="modal flex-center">
+  <div class="modal-reg flex-center">
     <form class="form">
       <div class="form-tabs" @click.prevent="changeWayReg">
         <button :class="{'active': !newUser, 'disactive': newUser}">Вход</button>

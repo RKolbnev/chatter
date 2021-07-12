@@ -8,8 +8,13 @@ const router = createRouter({
       component: () => import('../views/Registration')
     },
     {
-      path: '/user',
+      path: '/:id',
       component: () => import('../views/UserPage')
+      // children: [
+      //   {
+      //     path: '/message', component: () => import('../views/messa')}
+      //   }
+      // ]
     }
   ]
 })
