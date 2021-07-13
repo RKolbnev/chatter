@@ -1,16 +1,15 @@
 <template>
   <div class="modal-bg flex-center">
-    <div class="modal">
+    <div class="modal" :class="currentPosition.class">
       <div class="modal-header">
         <span>Редактировать фото</span>
         <span>Закрыть</span>
       </div>
 
       <div class="modal-content">
-
         <div class="modal-content__photo">
           <div class="modal-content__photo__bg" ref="availableLine">
-            <img src="../assets/test.jpg" alt="Background" draggable="false"
+            <img :src="require(`../assets/${currentPosition.src}.jpg`)" alt="Background" draggable="false"
               @mousedown="availableMove"
               @mouseup="unavailableMove"
               @mousemove="changePosition"
@@ -18,7 +17,7 @@
           </div>
         </div>
 
-        <div class="modal-content__toolsvue">
+          <div class="modal-content__tools">
           <p>Увеличить</p>
           <input type="range" min="1" max="3" step="0.1" v-model="width" aria-valuetext="Увеличить">
         </div>
@@ -39,14 +38,17 @@
 <script>
 export default {
   emits: ['save'],
+  props: {
+    currentPosition: Object
+  },
   data () {
     return {
       bgPosition: {
-        top: 0,
-        left: 0,
-        width: 50
+        top: this.currentPosition.top + (40 / (this.currentPosition.width / 100)),
+        left: this.currentPosition.left + (40 / (this.currentPosition.width / 100)),
+        width: (this.currentPosition.width / (this.currentPosition.width / 100)) - this.currentPosition.subtract
       },
-      width: 2,
+      width: this.currentPosition.width / 100,
       move: false,
       top: null,
       left: null
@@ -70,16 +72,24 @@ export default {
     },
     changePosition (evt) {
       if (this.move) {
+        const coefficient = 40 * this.width
+        const a = this.$refs.availableLine.getBoundingClientRect()
+        const b = evt.target.getBoundingClientRect()
         const x = this.bgPosition.left - (this.left - evt.pageX)
         const y = this.bgPosition.top - (this.top - evt.pageY)
-        this.bgPosition.top = y
+        this.bgPosition.top = (a.top + coefficient) >= b.top ? y : coefficient
         this.top = evt.pageY
-        this.bgPosition.left = x
+        this.bgPosition.left = (a.left + coefficient) >= b.left ? x : coefficient
         this.left = evt.pageX
       }
     },
     saveSettingsForPhoto () {
-      this.$emit('save', { top: this.bgPosition.top, left: this.bgPosition.left, width: this.bgPosition.width * this.width })
+      this.$emit('save', {
+        top: this.bgPosition.top - (40 * this.width),
+        left: this.bgPosition.left - (40 * this.width),
+        width: (this.bgPosition.width * this.width) + this.currentPosition.subtract,
+        type: this.currentPosition.type
+      })
     }
   }
 }

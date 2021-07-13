@@ -6,8 +6,43 @@
   height: 100vh
   background-color: #0000006e
 
+.edit
+  &__bg
+    width: 45rem
+    & div.modal
+      &-content
+        height: 20rem
+        &__photo
+          height: 17rem
+          &__bg
+            height: 12rem
+            &::after
+              width: 88%
+              height: 70%
+              box-shadow: 0px 0px 0px 2.6rem #0000007c
+
+  &__photo
+    width: 27rem
+    & div.modal
+      &-content
+        height: 29rem
+        &__photo
+          height: 26rem
+          &__bg
+            height: 21rem
+            &::after
+              margin-top: 3%
+              border-radius: 12rem
+              width: 81%
+              height: 81%
+              box-shadow: 0px 0px 0px 26rem #0000007c
+            & img
+              top: 0
+              left: 0
+
+
 .modal
-  width: 45rem
+  // width: 45rem
   height: fit-content
   background-color: $white
   border-radius: 0.5rem
@@ -29,52 +64,45 @@
         opacity: 1
         border-color: $light-blue
         color: darken($light-blue, 10%)
-
-
   &-content
-    height: 20rem
+    // height: 20rem
     background-color: #000
-
-
     &__photo
       position: relative
       overflow: hidden
       width: stretch
-      height: 17rem
+      // height: 17rem
       &__bg
         position: relative
         display: flex
         justify-content: center
         align-items: center
-        height: 12rem
+        // height: 12rem
         width: stretch
         padding: 2.5rem
         &::after
           position: absolute
           content: ''
           pointer-events: none
-          width: 88%
-          height: 70%
+          // width: 88%
+          // height: 70%
           border: 2px solid $white
-          box-shadow: 0px 0px 0px 2.6rem #0000007c
+          // box-shadow: 0px 0px 0px 2.6rem #0000007c
         & img
           position: absolute
           cursor: move
-
-
     &__tools
       width: stretch
       padding: 0 1rem
-      color: $white
-      font-size: 1rem
-    & p
-      margin: 0
-      padding: 0.2rem 0.5rem
-      text-align: center
-    & input
-      width: stretch
-      background-color: #fff
-
+      & p
+        margin: 0
+        padding: 0.2rem 0.5rem
+        font-size: 1rem
+        color: $white
+        text-align: center
+      & input
+        width: stretch
+        background-color: #fff
   &-btn
     display: flex
     justify-content: space-between
