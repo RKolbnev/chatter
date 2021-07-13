@@ -10,11 +10,10 @@ const router = createRouter({
     {
       path: '/:id',
       component: () => import('../views/UserPage')
-      // children: [
-      //   {
-      //     path: '/message', component: () => import('../views/messa')}
-      //   }
-      // ]
+    },
+    {
+      path: '/message',
+      component: () => import('../views/Messages')
     }
   ]
 })

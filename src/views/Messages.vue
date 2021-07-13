@@ -1,12 +1,20 @@
 <template>
   <div class="messages">
-    <div class="recipients">
-      <div class="search">
+    <div class="people scroll" >
+      <div class="people-search">
         <input type="text">
-        <button>Поиск</button>
+        <button><i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
-      <div>
-
+      <div class="people-list">
+        <div class="person" v-for="i in 100" :key="i">
+          <div class="person__img">
+            <img src="../assets/test2.jpg" alt="">
+          </div>
+          <div class="person__name">
+            Ivanova Eva Ivanovna
+          </div>
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </div>
       </div>
     </div>
 

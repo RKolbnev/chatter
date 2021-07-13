@@ -1,0 +1,87 @@
+.messages
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  width: stretch
+  max-width: 60rem
+  min-width: 40rem
+  height: fit-content
+  max-height: 80vh
+  margin: auto
+  margin-top: 8vh
+  padding: 1rem
+  background-color: lighten(#426389, 20%)
+  border: 2px solid $white
+  border-radius: 0.5rem
+
+.people
+  position: relative
+  display: flex
+  flex-direction: column
+  max-width: 20rem
+  min-width: 15rem
+  height: fit-content
+  max-height: 78vh
+  overflow: auto
+  background-color: $white
+  padding: 0.5rem
+  border-top-left-radius: 0.5rem
+  border-bottom-left-radius: 0.5rem
+  &-search
+    position: fixed
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    width: 14.5rem
+    & input
+      width: 90%
+      padding: 0.3rem
+      border: 1px solid $black
+      border-top-left-radius: 0.5rem
+      border-bottom-left-radius: 0.5rem
+      outline: none
+      font-size: 1rem
+    & button
+      width: 20%
+      cursor: pointer
+      color: $white
+      background-color: #426389
+      border: none
+      border-top-right-radius: 0.5rem
+      border-bottom-right-radius: 0.5rem
+      outline: none
+  &-list
+    margin-top: 2.5rem
+
+
+.person
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  align-items: center
+  justify-content: space-around
+  margin-top: 0.5rem
+  border-radius: 0.5rem
+  &__img
+    width: 2rem
+    height: 2rem
+    overflow: hidden
+    border: 1px solid $light-grey
+    border-radius: 1rem
+    & img
+      width: 2rem
+  &__name
+    cursor: pointer
+    font-size: 1rem
+  & i
+    font-size: 1.2rem
+    padding: 0.2rem
+    border-radius: 0.2rem
+    &:hover
+      color: $white
+      background-color: #ca2d2d
+  &:hover
+    background-color: $light-blue
+    text-decoration: underline
+
+
