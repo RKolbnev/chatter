@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-header></app-header>
+    <app-header v-if="logIn"></app-header>
     <router-view></router-view>
   </div>
 </template>
@@ -14,7 +14,7 @@ export default {
   },
   data () {
     return {
-      title: 'TITLE'
+      logIn: 'true'
     }
   }
 }

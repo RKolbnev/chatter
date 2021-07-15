@@ -17,7 +17,7 @@
       </div>
 
       <div class="info__name">
-        <span>Demodowa Inna Ivanovna</span>
+        <span>Demodowa Inna</span>
         <i class="fa fa-pencil" aria-hidden="true"></i>
       </div>
 
