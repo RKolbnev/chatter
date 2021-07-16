@@ -13,8 +13,11 @@ export default {
     'app-header': AppHeader
   },
   data () {
-    return {
-      logIn: 'true'
+    return {}
+  },
+  computed: {
+    logIn () {
+      return this.$route.path.length > 2
     }
   }
 }
