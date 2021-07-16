@@ -10,6 +10,12 @@ const router = createRouter({
     {
       path: '/:id',
       component: () => import('../views/UserPage')
+      // children: [
+      //   {
+      //     path: "/message:id",
+      //     component: () => import("../views/Messages")
+      //   }
+      // ]
     },
     {
       path: '/message',

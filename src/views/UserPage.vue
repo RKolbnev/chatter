@@ -1,30 +1,27 @@
 <template>
   <div class="user">
-
     <div class="info border-top">
-
       <div class="info__bg border-top" >
         <img :src="require(`../assets/${styleForBg.src}.jpg`)" alt="Background"
           :style="styleBg">
         <i class="fa fa-pencil" aria-hidden="true"
           @click="isEdit('styleForBg')"></i>
       </div>
-
       <div class="info__main">
         <img :src="require(`../assets/${styleForPhoto.src}.jpg`)" alt="Main Photo"
           :style="stylePhoto"
           @click="isEdit('styleForPhoto')">
       </div>
-
       <div class="info__name">
-        <span>Demodowa Inna</span>
+        <span>{{userInfo.name}}</span>
         <i class="fa fa-pencil" aria-hidden="true"></i>
       </div>
-
     </div>
-
     <div class="wall">
-      <button class="wall-add"><i class="fa fa-plus-square" aria-hidden="true"></i><span>Добавить новую публикацию</span></button>
+      <button class="wall-add">
+        <i class="fa fa-plus-square" aria-hidden="true"></i>
+        <span>Добавить новую публикацию</span>
+      </button>
       <hr>
     </div>
     <teleport to='body'>
@@ -47,6 +44,7 @@ export default {
   data () {
     return {
       modal: false,
+      userInfo: this.$store.getters.getUserInfo,
       styleForBg: {
         top: 0,
         left: 0,
@@ -70,7 +68,6 @@ export default {
   },
   methods: {
     changePhoto (settings) {
-      console.log(settings)
       this.modal = false
       this[settings.type] = { ...this[settings.type], ...settings }
       console.log(this.styleForPhoto)

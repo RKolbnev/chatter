@@ -12,9 +12,9 @@ export default {
   components: {
     'app-header': AppHeader
   },
-  data () {
-    return {}
-  },
+  // data () {
+  //   return {}
+  // },
   computed: {
     logIn () {
       return this.$route.path.length > 2

@@ -27,6 +27,9 @@
         @click.prevent="newUser ? regIn() : logIn()"
       >{{newUser ? 'Регистрация' : 'Вход'}}</button>
     </form>
+    <div v-if="query" class="preloader">
+      <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    </div>
   </div>
 </template>
 
@@ -37,6 +40,7 @@ export default {
   data () {
     return {
       newUser: false,
+      query: false,
       name: '',
       email: '',
       password: ''
@@ -47,6 +51,7 @@ export default {
       this.newUser = !(evt.target.textContent === 'Вход')
     },
     regIn () { // Создание нового пользователя
+      this.query = true
       const name = this.name
       const email = this.email
       const password = this.password
@@ -62,29 +67,23 @@ export default {
             .add({ // добавлем новое поле
               name,
               email,
-              password,
               id: res.user.uid,
               photoURL: '',
               bgURL: '',
               description: ''
             })
             .then(ref => {
-              // localStorage.setItem('id', res.user.uid);
-              // localStorage.setItem('name', name);
-              // localStorage.setItem('email', email);
-              // localStorage.setItem('password', password);
-              // localStorage.setItem('photoURL', '');
-              // localStorage.setItem('bgURL', '');
-              // localStorage.setItem('description', '');
-              // localStorage.setItem('firebaseDocumentId', ref.id);
+              //! localStorage.setItem('firebaseDocumentId', ref.id);
               this.name = ''
               this.email = ''
               this.password = ''
-              this.$router.push('/user')
+              this.query = false
+              this.$router.push(`/${res.user.uid}`)
             }).catch(error => alert(error))
         }).catch(error => alert(error.message))
     },
-    logIn () { // Вход в приложение с помощью
+    logIn () { // Вход в приложение с
+      this.query = true
       const auth = firebase.auth()
       auth.signInWithEmailAndPassword(this.email, this.password)
         .then(res => {
@@ -96,20 +95,22 @@ export default {
             .then(snapShot => { // Получаем снимок данных
               snapShot.forEach(item => {
                 const data = item.data() // преобразуем данные в понятный вид
-                console.log(data) // ? выводим данные в консоль
-                // localStorage.setItem('id', data.id);
-                // localStorage.setItem('name', data.name);
-                // localStorage.setItem('email', data.email);
-                // localStorage.setItem('password', data.password);
-                // localStorage.setItem('photoURL', data.photoURL);
-                // localStorage.setItem('bgURL', data.bgURL);
-                // localStorage.setItem('description', data.description);
-                // localStorage.setItem('firebaseDocumentId', item.id);
+                this.$store.commit('addUserInfo', data)
+                localStorage.setItem('email', this.email)
+                localStorage.setItem('password', this.password)
+                //! console.log(data) // ? выводим данные в консоль
+                //! localStorage.setItem('firebaseDocumentId', item.id);
+                this.query = false
                 this.$router.push(`/${data.id}`) // Перенаправляем на страницу пользователя
               })
             }).catch(error => alert(error))
         }).catch(error => alert(error.message))
     }
   }
+  // created() {
+  //   this.email  = localStorage.getItem('email') ?? '';
+  //   this.password = localStorage.getItem('password') ?? '';
+  //   this.logIn();
+  // }
 }
 </script>
