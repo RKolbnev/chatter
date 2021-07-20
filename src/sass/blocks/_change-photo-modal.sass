@@ -13,36 +13,36 @@
       &-content
         height: 20rem
         &__photo
-          height: 17rem
+          height: 16rem
           &__bg
-            height: 12rem
+            height: 15rem
             &::after
-              width: 88%
-              height: 70%
-              box-shadow: 0px 0px 0px 2.6rem #0000007c
-
+              width: 40rem
+              height: 10rem
+              box-shadow: 0px 0px 0px 5rem #0000007c
+          &__wrap
+            width: 40rem
+            height: 10rem
   &__photo
     width: 27rem
     & div.modal
       &-content
-        height: 29rem
+        height: 27rem
         &__photo
-          height: 26rem
+          height: 23rem
           &__bg
-            height: 21rem
+            height: 23rem
             &::after
-              margin-top: 3%
+              width: 20rem
+              height: 20rem
               border-radius: 12rem
-              width: 81%
-              height: 81%
               box-shadow: 0px 0px 0px 26rem #0000007c
-            & img
-              top: 0
-              left: 0
-
+          &__wrap
+            width: 20rem
+            height: 20rem
 
 .modal
-  // width: 45rem
+  margin-top: -10rem
   height: fit-content
   background-color: $white
   border-radius: 0.5rem
@@ -65,32 +65,33 @@
         border-color: $light-blue
         color: darken($light-blue, 10%)
   &-content
-    // height: 20rem
     background-color: #000
     &__photo
       position: relative
       overflow: hidden
       width: stretch
-      // height: 17rem
       &__bg
         position: relative
         display: flex
         justify-content: center
         align-items: center
-        // height: 12rem
-        width: stretch
-        padding: 2.5rem
+        width: 100%
+        height: 100%
         &::after
           position: absolute
           content: ''
           pointer-events: none
-          // width: 88%
-          // height: 70%
           border: 2px solid $white
-          // box-shadow: 0px 0px 0px 2.6rem #0000007c
+      &__wrap
+        position: relative
+        display: flex
+        align-items: center
+        justify-content: center
         & img
           position: absolute
+          display: block
           cursor: move
+          width: 100%
     &__tools
       width: stretch
       padding: 0 1rem

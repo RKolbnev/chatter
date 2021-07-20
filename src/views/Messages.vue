@@ -8,7 +8,7 @@
       <div class="people-list">
         <div class="person" v-for="i in 100" :key="i">
           <div class="person__img">
-            <img src="../assets/test2.jpg" alt="">
+            <!-- <img src="../assets/test2.jpg" alt=""> -->
           </div>
           <div class="person__name">
             Ivanova Eva Ivanovna
@@ -22,7 +22,7 @@
       <div class="chat-header">
         <div class="person">
           <div class="person__img">
-            <img src="../assets/test2.jpg" alt="">
+            <!-- <img src="../assets/test2.jpg" alt=""> -->
           </div>
           <div class="person__name">
             Ivanova Eva Ivanovna

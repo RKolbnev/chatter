@@ -60,19 +60,30 @@ export default {
       // Создаем нового пользователя
       auth.createUserWithEmailAndPassword(email, password)
         .then(res => {
+          const data = {
+            name,
+            email,
+            id: res.user.uid,
+            photoSettings: {
+              src: 'https://firebasestorage.googleapis.com/v0/b/chatter-df15a.appspot.com/o/defaultPhoto.jpg?alt=media&token=6c209b4d-8a89-4999-b6de-4e85aa3b2ab6',
+              top: 0,
+              left: 0,
+              width: 100
+            },
+            bgSettings: {
+              src: 'https://firebasestorage.googleapis.com/v0/b/chatter-df15a.appspot.com/o/defaultBg.jpg?alt=media&token=be60d324-5a19-44b6-80e8-60685e38c8b2',
+              top: 0,
+              left: 0,
+              width: 100
+            }
+          }
           // При успешном создании, добавляем данные в базу данных
           firebase
             .firestore() // Обращаемся к базе данных
             .collection('users') // К определенной коллекции
-            .add({ // добавлем новое поле
-              name,
-              email,
-              id: res.user.uid,
-              photoURL: '',
-              bgURL: '',
-              description: ''
-            })
+            .add(data) // добавлем новое поле
             .then(ref => {
+              this.$store.commit('addUserInfo', data)
               //! localStorage.setItem('firebaseDocumentId', ref.id);
               this.name = ''
               this.email = ''
@@ -100,17 +111,16 @@ export default {
                 localStorage.setItem('password', this.password)
                 //! console.log(data) // ? выводим данные в консоль
                 //! localStorage.setItem('firebaseDocumentId', item.id);
-                this.query = false
                 this.$router.push(`/${data.id}`) // Перенаправляем на страницу пользователя
               })
             }).catch(error => alert(error))
         }).catch(error => alert(error.message))
     }
+  },
+  created () { //! Заглушка на первое время
+    this.email = localStorage.getItem('email') ?? ''
+    this.password = localStorage.getItem('password') ?? ''
+    if (this.email.length > 0) this.logIn()
   }
-  // created() {
-  //   this.email  = localStorage.getItem('email') ?? '';
-  //   this.password = localStorage.getItem('password') ?? '';
-  //   this.logIn();
-  // }
 }
 </script>
