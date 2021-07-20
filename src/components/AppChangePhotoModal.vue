@@ -8,7 +8,6 @@
           Закрыть
         </span>
       </div>
-
       <div class="modal-content">
         <div class="modal-content__photo" >
           <div class="modal-content__photo__bg">
@@ -27,9 +26,7 @@
           <p>Увеличить</p>
           <input type="range" min="1" max="3" step="0.1" v-model="zoom" aria-valuetext="Увеличить">
         </div>
-
       </div>
-
       <div class="modal-btn">
         <button class="modal-btn__delete" @click="deleteImg">Удалить фото</button>
         <div>

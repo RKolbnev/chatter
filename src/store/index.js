@@ -33,6 +33,9 @@ export default createStore({
     },
     changeBgSettings (state, data) {
       state.userInfo.bgSettings = data
+    },
+    changeName (state, data) {
+      state.userInfo.name = data
     }
   },
   actions: {

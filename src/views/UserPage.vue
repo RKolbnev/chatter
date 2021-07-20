@@ -11,11 +11,19 @@
         <img :src="userInfo.photoSettings.src" alt="Main Photo"
           :style="stylePhoto">
       </div>
-      <div class="info__name">
+      <div class="info__name" v-if="!changingName">
         <span>{{userInfo.name}}</span>
-        <i class="fa fa-pencil" aria-hidden="true"></i>
+        <i class="fa fa-pencil" aria-hidden="true"
+          @click="changingName = true">
+        </i>
       </div>
+      <div v-else class="change-name">
+        <input type="text" :value="userInfo.name" ref="inputName">
+        <button
+          @click="changeName">Сохранить</button>
+        </div>
     </div>
+
     <div class="wall">
       <button class="wall-add">
         <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -23,6 +31,7 @@
       </button>
       <hr>
     </div>
+
     <teleport to='body'>
       <app-change-photo
         v-if="modal"
@@ -55,13 +64,21 @@ export default {
         type: 'photoSettings',
         difference: 0.6
       },
-      currentStyleForEdit: null
+      currentStyleForEdit: null,
+      changingName: false
     }
   },
   methods: {
     changePhoto (type, settings) {
       this.modal = false
       this.userInfo[type] = settings
+    },
+    changeName () {
+      this.changingName = false
+      const value = this.$refs.inputName.value
+      if (value.length > 0) {
+        this.$store.commit('changeName', value)
+      }
     },
     isEdit (editElement) {
       this.modal = true
