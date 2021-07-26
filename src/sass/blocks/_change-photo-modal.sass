@@ -122,9 +122,15 @@
         background-color: #7474749a
     & div
       & button:first-child
+        position: relative
         margin-right: 0.5rem
         color: $black
         border: 1px solid $black
+        & input
+          position: absolute
+          opacity: 0
+          left: 0
+          width: 100%
       & button:last-child
         color: darken($light-blue, 25%)
         border: 1px solid darken($light-blue, 25%)

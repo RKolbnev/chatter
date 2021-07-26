@@ -3,38 +3,49 @@
     <div class="modal" :class="currentPosition.class">
       <div class="modal-header">
         <span>Редактировать фото</span>
-        <span
-          @click="$emit('closeModal')">
+        <span @click="$emit('closeModal')">
           Закрыть
         </span>
       </div>
       <div class="modal-content">
-        <div class="modal-content__photo" >
+        <div class="modal-content__photo">
           <div class="modal-content__photo__bg">
             <div class="modal-content__photo__wrap" ref="availableLine">
-              <img :src="currentPosition.src" alt="Background" draggable="false"
+              <img
+                alt="Background"
+                draggable="false"
+                :src="currentPosition.src"
+                :style="styleForImg"
                 ref="img"
                 @mousedown="availableMove"
                 @mouseleave="unavailableMove"
                 @mouseup="unavailableMove"
                 @mousemove="changePosition"
-                :style="styleForImg">
+              />
             </div>
           </div>
         </div>
         <div class="modal-content__tools">
           <p>Увеличить</p>
-          <input type="range" min="1" max="3" step="0.1" v-model="zoom" aria-valuetext="Увеличить">
+          <input
+            type="range"
+            min="1"
+            max="3"
+            step="0.1"
+            v-model="zoom"
+            aria-valuetext="Увеличить"
+          />
         </div>
       </div>
       <div class="modal-btn">
-        <button class="modal-btn__delete" @click="deleteImg">Удалить фото</button>
+        <button class="modal-btn__delete" @click="deleteImg">
+          Удалить фото
+        </button>
         <div>
-          <button @click="addNewPhoto">Изменить фото</button>
-          <input type="file" accept="image/*"
-            @change="checkOnPhoto"
-            style="display:none"
-            ref="addPhotoInput">
+          <button>
+            Изменить фото
+            <input type="file" accept="image/*" @change="addNewPhoto" />
+          </button>
           <button @click="saveSettingsForPhoto">Сохранить</button>
         </div>
       </div>
@@ -43,17 +54,20 @@
 </template>
 
 <script>
+import firebase from '../firebase'
+
 export default {
   emits: ['save', 'closeModal'],
   props: {
-    currentPosition: Object
+    currentPosition: Object,
+    id: String
   },
   data () {
     return {
       bgPosition: {
         top: this.currentPosition.top / this.currentPosition.difference,
         left: this.currentPosition.left / this.currentPosition.difference,
-        width: (this.currentPosition.width / (this.currentPosition.width / 100))
+        width: this.currentPosition.width / (this.currentPosition.width / 100)
       },
       zoom: this.currentPosition.width / 100,
       move: false,
@@ -88,16 +102,34 @@ export default {
       this.$emit('save', this.currentPosition.type, {
         top: img.offsetTop * this.currentPosition.difference,
         left: img.offsetLeft * this.currentPosition.difference,
-        width: (this.bgPosition.width * this.zoom),
+        width: this.bgPosition.width * this.zoom,
         src: img.src
       })
     },
-    addNewPhoto () {
-      this.$refs.addPhotoInput.click()
-    },
-    checkOnPhoto (evt) {
-      const url = URL.createObjectURL(evt.target.files[0])
-      this.$refs.img.src = url
+    addNewPhoto (evt) {
+      const uploadTask = firebase
+        .storage()
+        .ref(`/${this.id}`)
+        .child(this.currentPosition.type.split('Settings')[0])
+        .put(evt.target.files[0])
+      uploadTask.on(
+        'state_changed', // Метод позволяет назначить 3 наблюдателей
+        // 1 Срабатывает каждый раз при изменении состояния
+        snapshot => {
+          console.log(snapshot.bytesTransferred / snapshot.totalBytes * 100 + '%')
+        }, // для примера выводим % загрузки
+        // 2 При ошибке
+        err => {
+          alert(err.message)
+        }, // Сообщение об ошибке
+        // 3 При успешном заверщении загрузки
+        // Получаем ссылку на загруженый файл.
+        () => {
+          uploadTask.snapshot.ref
+            .getDownloadURL()
+            .then(url => (this.$refs.img.src = url))
+        }
+      )
     },
     deleteImg () {
       const type = this.currentPosition.type.split('Settings')[0]
@@ -110,6 +142,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

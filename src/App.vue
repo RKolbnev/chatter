@@ -12,13 +12,13 @@ export default {
   components: {
     'app-header': AppHeader
   },
-  // data () {
-  //   return {}
-  // },
   computed: {
     logIn () {
       return this.$route.path.length > 2
     }
+  },
+  created () {
+    this.$router.push('/')
   }
 }
 </script>

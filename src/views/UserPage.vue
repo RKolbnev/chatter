@@ -37,6 +37,7 @@
         v-if="modal"
         @save="changePhoto"
         @closeModal="this.modal = false"
+        :id="userInfo.id"
         :currentPosition="currentStyleForEdit"></app-change-photo>
     </teleport>
 
@@ -72,12 +73,13 @@ export default {
     changePhoto (type, settings) {
       this.modal = false
       this.userInfo[type] = settings
+      this.$store.commit('changeUserInfo', { type, data: settings })
     },
     changeName () {
       this.changingName = false
       const value = this.$refs.inputName.value
       if (value.length > 0) {
-        this.$store.commit('changeName', value)
+        this.$store.commit('changeUserInfo', { type: 'name', data: value })
       }
     },
     isEdit (editElement) {

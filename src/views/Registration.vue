@@ -84,7 +84,7 @@ export default {
             .add(data) // добавлем новое поле
             .then(ref => {
               this.$store.commit('addUserInfo', data)
-              //! localStorage.setItem('firebaseDocumentId', ref.id);
+              this.$store.commit('setStorageID', ref.id)
               this.name = ''
               this.email = ''
               this.password = ''
@@ -93,7 +93,7 @@ export default {
             }).catch(error => alert(error))
         }).catch(error => alert(error.message))
     },
-    logIn () { // Вход в приложение с
+    logIn () { // Вход в приложение
       this.query = true
       const auth = firebase.auth()
       auth.signInWithEmailAndPassword(this.email, this.password)
@@ -106,11 +106,10 @@ export default {
             .then(snapShot => { // Получаем снимок данных
               snapShot.forEach(item => {
                 const data = item.data() // преобразуем данные в понятный вид
-                this.$store.commit('addUserInfo', data)
+                this.$store.commit('addUserInfo', data) // сохраняем id пользователя
+                this.$store.commit('setStorageID', item.id) // сохраняем ключ от бд пользователя
                 localStorage.setItem('email', this.email)
                 localStorage.setItem('password', this.password)
-                //! console.log(data) // ? выводим данные в консоль
-                //! localStorage.setItem('firebaseDocumentId', item.id);
                 this.$router.push(`/${data.id}`) // Перенаправляем на страницу пользователя
               })
             }).catch(error => alert(error))
