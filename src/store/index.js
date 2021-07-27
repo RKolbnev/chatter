@@ -4,6 +4,8 @@ import firebase from '../firebase'
 export default createStore({
   state () {
     return {
+      currentChatPerson: null,
+      chatRooms: [],
       userInfo: null,
       storageID: null,
       defaultImg: {
@@ -16,12 +18,15 @@ export default createStore({
     getUserInfo (state) {
       return state.userInfo
     },
-    // getPhotoSettings (state) {
-    //   return state.userInfo.photoSettings;
-    // },
-    // getBgSettings (state) {
-    //   return state.userInfo.bgSettings;
-    // },
+    getStorageID (state) {
+      return state.storageID
+    },
+    getCurrentChatPerson (state) {
+      return state.currentChatPerson
+    },
+    getChatRooms (state) {
+      return state.chatRooms
+    },
     getDefaultImg (state) {
       return state.defaultImg
     }
@@ -35,7 +40,17 @@ export default createStore({
     },
     changeUserInfo (state, payload) { // Сохранение данных на сервер
       state.userInfo[payload.type] = payload.data
-      firebase.firestore().collection('users').doc(state.storageID).set({ [payload.type]: payload.data }, { merge: true })
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(state.storageID)
+        .set({ [payload.type]: payload.data }, { merge: true })
+    },
+    setCurrentChatPerson (state, payload) {
+      state.currentChatPerson = payload
+    },
+    setChatRooms (state, rooms) {
+      state.chatRooms = rooms
     }
   },
   actions: {

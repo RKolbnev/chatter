@@ -115,13 +115,13 @@ export default {
       uploadTask.on(
         'state_changed', // Метод позволяет назначить 3 наблюдателей
         // 1 Срабатывает каждый раз при изменении состояния
-        snapshot => {
+        snapshot => { // для примера выводим % загрузки
           console.log(snapshot.bytesTransferred / snapshot.totalBytes * 100 + '%')
-        }, // для примера выводим % загрузки
+        },
         // 2 При ошибке
         err => {
           alert(err.message)
-        }, // Сообщение об ошибке
+        },
         // 3 При успешном заверщении загрузки
         // Получаем ссылку на загруженый файл.
         () => {
@@ -141,5 +141,3 @@ export default {
   }
 }
 </script>
-
-<style></style>

@@ -75,7 +75,8 @@ export default {
               top: 0,
               left: 0,
               width: 100
-            }
+            },
+            publics: []
           }
           // При успешном создании, добавляем данные в базу данных
           firebase

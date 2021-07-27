@@ -10,16 +10,16 @@ const router = createRouter({
     {
       path: '/:id',
       component: () => import('../views/UserPage')
-      // children: [
-      //   {
-      //     path: "/message:id",
-      //     component: () => import("../views/Messages")
-      //   }
-      // ]
     },
     {
       path: '/message',
-      component: () => import('../views/Messages')
+      component: () => import('../views/Messages'),
+      children: [
+        {
+          path: ':chatRoomID',
+          component: () => import('../views/ChatRoom')
+        }
+      ]
     }
   ]
 })
