@@ -16,8 +16,8 @@ const router = createRouter({
       component: () => import('../views/Messages'),
       children: [
         {
-          path: ':chatRoomID',
-          component: () => import('../views/ChatRoom')
+          path: ':id?',
+          component: () => import('../views/Messages')
         }
       ]
     }

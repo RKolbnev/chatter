@@ -1,3 +1,6 @@
+.unread
+  background-color: lighten($light-blue, 15%)
+
 .messages
   display: flex
   flex-direction: row
@@ -87,8 +90,9 @@
   flex-wrap: nowrap
   align-items: center
   justify-content: space-between
-  margin-top: 1rem
-  border-radius: 0.5rem
+  // margin-top: 0.5rem
+  padding: 0.5rem
+  // border-radius: 0.5rem
   &__img
     width: 2rem
     height: 2rem
@@ -104,6 +108,7 @@
     font-size: 1.2rem
     padding: 0.2rem
     border-radius: 0.2rem
+    margin-right: 0.5rem
     &:hover
       color: darken($white, 5%)
       background-color: #ca2d2d
@@ -122,14 +127,20 @@
   border-top-right-radius: 0.5rem
   border-bottom-right-radius: 0.5rem
   &-header
-    margin-bottom: 1rem
+    margin: -0.5rem
+    margin-bottom: 0
     padding: 0.25rem
-    border-radius: 0.5rem
+    border-top-right-radius: 0.5rem
     background-color: #9aacbd
     & div.person
-      justify-content: space-between
       margin: auto
       padding: 0.25rem
+      &__img
+        width: 2.5rem
+        height: 2.5rem
+        border-radius: 2.5rem
+      &__name
+        margin: auto
   &-write
     display: flex
     flex-direction: row
@@ -156,6 +167,7 @@
   width: fit-content
   padding: 0.5rem 1rem
   margin-bottom: 0.5rem
+  margin-top: 0.5rem
   font-size: 1rem
   color: $white
   border-radius: 0.5rem
@@ -178,9 +190,9 @@
     & i
       margin-left: 1rem
       margin-right: -0.5rem
-.from
+.to
   margin-right: auto
   background-color: darken($light-blue, 15%)
-.to
+.from
   margin-left: auto
   background-color: lighten(#426389, 10%)

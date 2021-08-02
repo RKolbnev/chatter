@@ -6,7 +6,6 @@
     </div>
     <div class="header-btn">
       <div @click="$router.push('/message')" >
-        <span>0</span>
         <i class="fa fa-envelope" aria-hidden="true"></i>
       </div>
       <div @click="$router.push(getPage)">
