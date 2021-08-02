@@ -13,6 +13,8 @@
     </div>
     <div class="message__wrapper scroll" ref="scroll">
       <div class="message"
+        :title="detailsMessage(message)"
+        @mouseenter="readMessage(message)"
         :class="message.idFrom === userInfo.id ? 'from' : 'to'"
         v-for="message in messages" :key="message.time">
         <span>{{message.text}}</span>
@@ -41,12 +43,9 @@ export default {
       messages: []
     }
   },
-  // mounted() {
-  //   this.getMessages()
-  // },
   watch: {
     room: function (newVal, oldVal) {
-      if (newVal !== oldVal) {
+      if (newVal.roomID !== oldVal?.roomID) {
         this.getMessages()
       }
     }
@@ -75,6 +74,17 @@ export default {
         roomID: message.roomID,
         chatPerson: this.userInfo
       })
+
+      const unreadMes = this.messages
+        .filter(mes => mes.idTo === message.idFrom)
+        .filter(mes => mes.status === false)
+      unreadMes.forEach(mes => {
+        this.$store.commit('readMessage', {
+          id: mes.roomID,
+          storageID: mes.storageID,
+          timestamp: mes.timestamp
+        })
+      })
     },
     getMessages () {
       if (!this.room) return
@@ -86,17 +96,21 @@ export default {
         .orderBy('timestamp', 'desc')
         .limit(15)
         .onSnapshot(messages => {
-          // console.log(messages.docs);
           messages.docChanges().forEach(message => {
-            this.messages.push(message.doc.data())
+            if (message.type === 'added' && (this.room.roomID === message.doc.data().roomID)) {
+              this.messages.push({ ...message.doc.data(), storageID: message.doc.id })
+            } else if (message.type === 'modified') {
+              this.messages.forEach(item => {
+                if (item.timestamp === message.doc.data().timestamp) {
+                  item.status = true
+                }
+              })
+            } else {
+              this.messages = this.messages.filter(item => item.timestamp !== message.doc.data().timestamp)
+            }
           })
           this.messages.sort((a, b) => a.timestamp - b.timestamp)
         })
-    },
-    scrollToLastMessage () {
-      if (this.$refs.scroll && this.$refs.scroll.lastElementChild) {
-        this.$refs.scroll.lastElementChild.scrollIntoView({ behavior: 'smooth' })
-      }
     },
     availableDate (timestamp) {
       const dayOfWeek = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье']
@@ -119,6 +133,17 @@ export default {
       }
 
       return res
+    },
+    readMessage (message) {
+      if (message.idFrom === this.userInfo.id) return
+      this.$store.commit('readMessage', {
+        id: this.room.roomID,
+        storageID: message.storageID,
+        timestamp: message.timestamp
+      })
+    },
+    detailsMessage (message) {
+      return message.status ? 'прочитано' : 'непрочитано'
     }
   },
   computed: {
@@ -128,7 +153,9 @@ export default {
     }
   },
   updated () {
-    this.scrollToLastMessage()
+    if (this.$refs?.scroll?.lastElementChild) {
+      this.$refs.scroll.lastElementChild.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 }
 </script>

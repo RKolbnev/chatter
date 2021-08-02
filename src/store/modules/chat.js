@@ -5,25 +5,6 @@ export default {
   state () {
     return {}
   },
-  getters: {
-    getChatRooms (_) {
-      return (id) => {
-        const chatRooms = []
-
-        firebase
-          .firestore()
-          .collection('rooms')
-          .doc(id)
-          .collection(id)
-          .get()
-          .then(docs => {
-            docs.forEach(doc => chatRooms.push(doc.data()))
-          })
-
-        return chatRooms
-      }
-    }
-  },
   mutations: {
     addChatRoom (_, data) {
       const collection = firebase
@@ -43,14 +24,22 @@ export default {
           }
         })
     },
-    sendMessage (state, message) {
-      console.log(message)
+    sendMessage (_, message) {
       firebase
         .firestore()
         .collection('messages')
         .doc(message.roomID)
         .collection(message.roomID)
         .add(message)
+    },
+    readMessage (_, data) {
+      firebase
+        .firestore()
+        .collection('messages')
+        .doc(data.id)
+        .collection(data.id)
+        .doc(data.storageID)
+        .set({ status: true }, { merge: true })
     }
 
   },

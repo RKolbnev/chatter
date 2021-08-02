@@ -24,9 +24,9 @@
 
       <div class="people-list scroll" v-if="chatRooms">
         <div class="person"
-          :class="{'unread': !isRead}"
+          :class="{'unread': !room.isRead}"
           v-for="room in chatRooms"
-          :key="room.id"
+          :key="room.roomID"
           @click="setCurrentChatPerson(room)">
           <div class="person__img">
             <img alt=""
@@ -60,9 +60,7 @@ export default {
       currentChatPerson: null,
       userInfo: this.$store.getters.getUserInfo,
       search: '',
-      searchResult: [],
-      isRead: false
-      // haveUnread: false,
+      searchResult: []
     }
   },
   methods: {
@@ -88,19 +86,6 @@ export default {
     styleForChatPerson (style) {
       return `top: ${style.top}px; left: ${style.left}px; width: ${style.width}%`
     },
-    // getRooms() {
-    //   const id = this.userInfo.id;
-
-    //   firebase
-    //     .firestore()
-    //     .collection("rooms")
-    //     .doc(id)
-    //     .collection(id)
-    //     .get()
-    //     .then(docs => {
-    //       docs.forEach(doc => this.chatRooms.push(doc.data()));
-    //     });
-    // },
     getRooms () {
       const id = this.userInfo.id
       firebase
@@ -110,7 +95,7 @@ export default {
         .collection(id)
         .onSnapshot(doc => {
           doc.docChanges().forEach(change => {
-            this.chatRooms.push(change.doc.data())
+            this.chatRooms.push({ ...change.doc.data(), isRead: false })
             this.getMessages(change.doc.data().roomID)
           })
         })
@@ -124,40 +109,20 @@ export default {
         .limit(1)
         .onSnapshot(messages => {
           messages.docChanges().forEach(message => {
-            if (!message.doc.data().status) {
-              this.isRead = message.doc.data().status
+            const mes = message.doc.data()
+            if ((mes.idTo === this.userInfo.id) && !mes.status) {
+              this.chatRooms.forEach(room => {
+                if (room.roomID === mes.roomID) {
+                  room.isRead = mes.status
+                }
+              })
             }
-            // this.messages.push(message.doc.data());
           })
-          // this.messages = allMessages.reverse();
         })
     }
   },
   created () {
-    // this.getMessages(this.currentChatPerson.roomID)
     this.getRooms()
-  },
-  watch: {
-    room: function (newVal, oldVal) {
-      const allMessages = []
-      if (newVal !== oldVal) {
-        const id = this.room.roomID
-        firebase
-          .firestore()
-          .collection('messages')
-          .doc(id)
-          .collection(id)
-          .orderBy('timestamp', 'desc')
-          .limit(15)
-          .onSnapshot(messages => {
-            messages.docChanges().forEach(message => {
-              allMessages.push(message.doc.data())
-            })
-            this.messages = allMessages.reverse()
-          })
-      }
-    }
   }
-
 }
 </script>
