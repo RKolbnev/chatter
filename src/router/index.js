@@ -9,7 +9,8 @@ const router = createRouter({
     },
     {
       path: '/:id',
-      component: () => import('../views/UserPage')
+      component: () => import('../views/UserPage'),
+      props: true
     },
     {
       path: '/message',

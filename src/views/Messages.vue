@@ -97,6 +97,7 @@ export default {
           doc.docChanges().forEach(change => {
             this.chatRooms.push({ ...change.doc.data(), isRead: false })
             this.getMessages(change.doc.data().roomID)
+            this.checkChatPersonData(change.doc.data())
           })
         })
     },
@@ -114,6 +115,22 @@ export default {
             this.chatRooms.forEach(room => {
               if (room.roomID === mes.roomID) {
                 room.isRead = status
+              }
+            })
+          })
+        })
+    },
+    checkChatPersonData (room) {
+      firebase.firestore()
+        .collection('users')
+        .where('id', '==', room.chatPerson.id)
+        .get()
+        .then(snapShot => {
+          snapShot.forEach(info => {
+            console.log(info.data())
+            this.chatRooms.forEach(chat => {
+              if (chat.roomID === room.roomID) {
+                chat.chatPerson = info.data()
               }
             })
           })

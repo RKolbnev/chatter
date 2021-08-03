@@ -1,7 +1,8 @@
 <template>
   <div class="chat" v-if="room">
     <div class="chat-header">
-      <div class="person" >
+      <div class="person"
+      @click="$router.push(`/${room.chatPerson.id}`)">
         <div class="person__img">
           <img alt=""
             :src="room.chatPerson.photoSettings.src"
