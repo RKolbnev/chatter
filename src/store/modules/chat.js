@@ -3,7 +3,16 @@ import firebase from '../../firebase'
 export default {
   namespaced: false,
   state () {
-    return {}
+    return {
+      listeningsRooms: {}
+    }
+  },
+  getters: {
+    getListeningsRooms (state) {
+      return (id) => {
+        return state.listeningsRooms?.[id]
+      }
+    }
   },
   mutations: {
     addChatRoom (_, data) {
@@ -24,6 +33,9 @@ export default {
           }
         })
     },
+    addListeningRoom (state, id) {
+      state.listeningsRooms[id] = id
+    },
     sendMessage (_, message) {
       firebase
         .firestore()
@@ -41,7 +53,6 @@ export default {
         .doc(data.storageID)
         .set({ status: true }, { merge: true })
     }
-
   },
   actions: {}
 }

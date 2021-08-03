@@ -45,15 +45,21 @@ export default {
   },
   watch: {
     room: function (newVal, oldVal) {
-      if (newVal.roomID !== oldVal?.roomID) {
-        this.getMessages()
+      if ((newVal.roomID !== oldVal?.roomID)) {
+        if (this.$store.getters.getListeningsRooms(newVal.roomID)) {
+          this.getMessages()
+        } else {
+          this.$store.commit('addListeningRoom', newVal.roomID)
+          this.getMessages(true)
+        }
       }
     }
   },
   methods: {
     sendMessage () {
+      if (this.textMessage.trim().length < 1) return
       const message = {
-        text: this.textMessage,
+        text: this.textMessage.trim(),
         status: false,
         roomID: this.room.roomID,
         idFrom: this.userInfo.id,
@@ -78,6 +84,7 @@ export default {
       const unreadMes = this.messages
         .filter(mes => mes.idTo === message.idFrom)
         .filter(mes => mes.status === false)
+
       unreadMes.forEach(mes => {
         this.$store.commit('readMessage', {
           id: mes.roomID,
@@ -86,16 +93,18 @@ export default {
         })
       })
     },
-    getMessages () {
+    getMessages (first) {
       if (!this.room) return
       this.messages = []
-      firebase.firestore()
+
+      const query = firebase.firestore()
         .collection('messages')
         .doc(this.room.roomID)
         .collection(this.room.roomID)
         .orderBy('timestamp', 'desc')
         .limit(15)
-        .onSnapshot(messages => {
+      if (first) {
+        query.onSnapshot(messages => {
           messages.docChanges().forEach(message => {
             if (message.type === 'added' && (this.room.roomID === message.doc.data().roomID)) {
               this.messages.push({ ...message.doc.data(), storageID: message.doc.id })
@@ -111,6 +120,15 @@ export default {
           })
           this.messages.sort((a, b) => a.timestamp - b.timestamp)
         })
+      } else {
+        query.get()
+          .then(messages => {
+            messages.forEach(message => {
+              this.messages.push({ ...message.data(), storageID: message.id })
+            })
+            this.messages.sort((a, b) => a.timestamp - b.timestamp)
+          })
+      }
     },
     availableDate (timestamp) {
       const dayOfWeek = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье']

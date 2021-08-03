@@ -110,13 +110,12 @@ export default {
         .onSnapshot(messages => {
           messages.docChanges().forEach(message => {
             const mes = message.doc.data()
-            if ((mes.idTo === this.userInfo.id) && !mes.status) {
-              this.chatRooms.forEach(room => {
-                if (room.roomID === mes.roomID) {
-                  room.isRead = mes.status
-                }
-              })
-            }
+            const status = mes.idTo === this.userInfo.id ? mes.status : true
+            this.chatRooms.forEach(room => {
+              if (room.roomID === mes.roomID) {
+                room.isRead = status
+              }
+            })
           })
         })
     }
