@@ -112,12 +112,10 @@ export default {
         })
     },
     deleteRoom (room) {
-      if (this.currentChatPerson.roomID === room.roomID) {
-        this.currentChatPerson = null
-        // console.log(this.currentChatPerson);
-        // console.log(room);
-      }
       this.$store.commit('deleteChatRoom', { userInfo: this.userInfo.id, room: room.roomID })
+      if (this.currentChatPerson?.roomID === room.roomID) {
+        this.currentChatPerson = null
+      }
     },
     getMessages (id) {
       firebase.firestore()
