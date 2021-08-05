@@ -26,11 +26,40 @@ export default {
         .get()
         .then(docs => {
           if (!docs.size) {
-            collection.add({
-              roomID: data.roomID,
-              chatPerson: data.chatPerson
-            })
+            const otherRoomID = data.roomID.replace(data.id, '') + data.id
+            collection
+              .where('roomID', '==', otherRoomID)
+              .get()
+              .then(docs => {
+                if (!docs.size) {
+                  collection.add({
+                    roomID: data.roomID,
+                    chatPerson: data.chatPerson
+                  })
+                }
+              })
           }
+        })
+    },
+    deleteChatRoom (_, id) {
+      console.log(id)
+      firebase
+        .firestore()
+        .collection('rooms')
+        .doc(id.userInfo)
+        .collection(id.userInfo)
+        .where('roomID', '==', id.room)
+        .get()
+        .then(snapShot => {
+          snapShot.forEach(doc => {
+            firebase
+              .firestore()
+              .collection('rooms')
+              .doc(id.userInfo)
+              .collection(id.userInfo)
+              .doc(doc.id)
+              .delete()
+          })
         })
     },
     addListeningRoom (state, id) {

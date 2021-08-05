@@ -46,7 +46,7 @@ export default {
   },
   watch: {
     room: function (newVal, oldVal) {
-      if ((newVal.roomID !== oldVal?.roomID)) {
+      if ((newVal?.roomID !== oldVal?.roomID) && newVal !== null) {
         if (this.$store.getters.getListeningsRooms(newVal.roomID)) {
           this.getMessages()
         } else {
@@ -103,7 +103,6 @@ export default {
         .doc(this.room.roomID)
         .collection(this.room.roomID)
         .orderBy('timestamp', 'desc')
-        .limit(15)
       if (first) {
         query.onSnapshot(messages => {
           messages.docChanges().forEach(message => {

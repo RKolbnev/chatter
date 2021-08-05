@@ -35,7 +35,7 @@
             />
           </div>
           <div class="person__name">{{ room.chatPerson.name }}</div>
-          <i class="fa fa-trash" aria-hidden="true"></i>
+          <i class="fa fa-trash" aria-hidden="true" @click.stop="deleteRoom(room)"></i>
         </div>
       </div>
 
@@ -95,11 +95,29 @@ export default {
         .collection(id)
         .onSnapshot(doc => {
           doc.docChanges().forEach(change => {
-            this.chatRooms.push({ ...change.doc.data(), isRead: false })
-            this.getMessages(change.doc.data().roomID)
-            this.checkChatPersonData(change.doc.data())
+            const data = change.doc.data()
+            console.log(change.type)
+            if (change.type === 'removed') {
+              this.chatRooms.forEach((room, idx) => {
+                if (room.roomID === data.roomID) {
+                  this.chatRooms.splice(idx, 1)
+                }
+              })
+            } else {
+              this.chatRooms.push({ ...data, isRead: false })
+              this.getMessages(data.roomID)
+              this.checkChatPersonData(data)
+            }
           })
         })
+    },
+    deleteRoom (room) {
+      if (this.currentChatPerson.roomID === room.roomID) {
+        this.currentChatPerson = null
+        // console.log(this.currentChatPerson);
+        // console.log(room);
+      }
+      this.$store.commit('deleteChatRoom', { userInfo: this.userInfo.id, room: room.roomID })
     },
     getMessages (id) {
       firebase.firestore()
@@ -127,7 +145,6 @@ export default {
         .get()
         .then(snapShot => {
           snapShot.forEach(info => {
-            console.log(info.data())
             this.chatRooms.forEach(chat => {
               if (chat.roomID === room.roomID) {
                 chat.chatPerson = info.data()
