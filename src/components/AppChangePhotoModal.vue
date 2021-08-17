@@ -3,9 +3,7 @@
     <div class="modal" :class="currentPosition.class">
       <div class="modal-header">
         <span>Редактировать фото</span>
-        <span @click="$emit('closeModal')">
-          Закрыть
-        </span>
+        <span @click="$emit('closeModal')">Закрыть</span>
       </div>
       <div class="modal-content">
         <div class="modal-content__photo">
@@ -22,6 +20,9 @@
                 @mouseup="unavailableMove"
                 @mousemove="changePosition"
               />
+              <div v-if="loadImg" class="progress">
+                <progress :value="progressLoad" max="100" ></progress>
+              </div>
             </div>
           </div>
         </div>
@@ -72,7 +73,9 @@ export default {
       zoom: this.currentPosition.width / 100,
       move: false,
       top: null,
-      left: null
+      left: null,
+      loadImg: false,
+      progressLoad: 0
     }
   },
   computed: {
@@ -107,6 +110,7 @@ export default {
       })
     },
     addNewPhoto (evt) {
+      this.loadImg = true
       const uploadTask = firebase
         .storage()
         .ref(`/${this.id}`)
@@ -117,6 +121,7 @@ export default {
         // 1 Срабатывает каждый раз при изменении состояния
         snapshot => { // для примера выводим % загрузки
           console.log(snapshot.bytesTransferred / snapshot.totalBytes * 100 + '%')
+          this.progressLoad = snapshot.bytesTransferred / snapshot.totalBytes * 100
         },
         // 2 При ошибке
         err => {
@@ -128,6 +133,7 @@ export default {
           uploadTask.snapshot.ref
             .getDownloadURL()
             .then(url => (this.$refs.img.src = url))
+          this.loadImg = false
         }
       )
     },

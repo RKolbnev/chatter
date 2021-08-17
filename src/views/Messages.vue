@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import ChatRoom from './ChatRoom.vue'
+import ChatRoom from '../components/ChatRoom.vue'
 import firebase from '../firebase'
 
 export default {
