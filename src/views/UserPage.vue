@@ -26,11 +26,24 @@
     </div>
 
     <div class="wall">
-      <button class="wall-add" v-if="myPage">
+      <button class="wall-add" v-if="myPage && !isAddNewPublic" @click="addNewPublic">
         <i class="fa fa-plus-square" aria-hidden="true"></i>
         <span>Добавить новую публикацию</span>
       </button>
+      <div v-else-if="isAddNewPublic">
+        <input type="text" v-model="newPublicText" placeholder="О чем хотите рассказать?"
+          @keyup.enter="saveNewPublic">
+      </div>
       <hr>
+      <div class="wall-publics">
+        <div v-for="post in userInfo.publics" :key="post.id">
+          {{post.text}}
+          <span>
+            {{availableDate(post.timestamp)}}
+            <i class="fa fa-trash" aria-hidden="true" @click.stop="deletePublic(post.id)"></i>
+          </span>
+        </div>
+      </div>
     </div>
 
     <teleport to='body'>
@@ -70,7 +83,9 @@ export default {
         difference: 0.6
       },
       currentStyleForEdit: null,
-      changingName: false
+      changingName: false,
+      newPublicText: '',
+      isAddNewPublic: false
     }
   },
   methods: {
@@ -106,6 +121,45 @@ export default {
             })
           })
       }
+    },
+    addNewPublic () {
+      this.isAddNewPublic = true
+    },
+    saveNewPublic () {
+      this.isAddNewPublic = false
+      if (this.newPublicText.trim().length < 1) return
+      const data = {
+        timestamp: Date.now(),
+        id: Math.random(),
+        text: this.newPublicText.trim()
+      }
+      this.$store.commit('addPublic', data)
+      this.newPublicText = ''
+    },
+    deletePublic (id) {
+      this.$store.commit('deletePublic', id)
+    },
+    availableDate (timestamp) {
+      const dayOfWeek = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье']
+      const date = new Date(timestamp)
+      const currentDate = new Date()
+      const thisWeek = currentDate - date < 604_800_000
+      const year = date.getFullYear()
+      const month = date.getMonth()
+      const dayOfMonth = date.getDate()
+      const day = date.getDay() - 1
+      const hour = date.getHours() >= 10 ? date.getHours() : `0${date.getHours()}`
+      const minutes = date.getMinutes() >= 10 ? date.getMinutes() : `0${date.getMinutes()}`
+
+      let res
+
+      if (thisWeek) {
+        res = `${dayOfWeek[day]} ${hour}:${minutes}`
+      } else {
+        res = `${dayOfMonth}/${month}/${year} ${hour}:${minutes}`
+      }
+
+      return res
     }
   },
   computed: {

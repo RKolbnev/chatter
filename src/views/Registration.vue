@@ -20,6 +20,7 @@
         <div class="form-data__item">
           <i class="fa fa-key"></i>
           <input type="text" placeholder="Пароль"
+            @keyup.enter="newUser ? regIn() : logIn()"
             v-model="password">
         </div>
       </div>

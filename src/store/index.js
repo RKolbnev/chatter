@@ -37,7 +37,22 @@ export default createStore({
         .collection('users')
         .doc(state.storageID)
         .set({ [payload.type]: payload.data }, { merge: true })
+    },
+    addPublic (state, payload) {
+      state.userInfo.publics.push(payload)
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(state.storageID)
+        .set({ publics: state.userInfo.publics }, { merge: true })
+    },
+    deletePublic (state, publicID) {
+      state.userInfo.publics = state.userInfo.publics.filter(post => post.id !== publicID)
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(state.storageID)
+        .set({ publics: state.userInfo.publics }, { merge: true })
     }
-  },
-  actions: {}
+  }
 })
