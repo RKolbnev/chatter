@@ -1,12 +1,76 @@
-@media screen and ( max-width: 560px)
+@media screen and ( max-width: 640px)
   .form
     min-width: stretch
-@media screen and ( max-width: 640px)
   .header
-    padding: 0.2rem
-  .user
+    padding: 0.2rem 1rem
+  .user, .messages
     min-width: stretch
+    margin-top: 3.4rem
+    margin-bottom: 0
+    border-radius: 0
+  .wall
+    margin: 0
+  .border-top
+    border-radius: 0
+  .info
+    height: fit-content
+    &__bg
+      height: 5rem
+      overflow: hidden
+      & img
+        transform: translateY(50%)
+    &__main
+      width: 8rem
+      height: 8rem
+      margin-top: 1rem
+      margin-left: 1rem
+      overflow: hidden
+      & img
+        transform: translateX(10%)
+    &__name
+      margin-left: 10rem
+  .people
+    min-width: 90%
+    border-radius: 0
+    margin-right: 2rem
+    transition: 0.3s
+    &-search
+      width: stretch
+    & ~ input:checked
+      background-color: red
+  .messages__mobile
+    display: block
+    position: absolute
+    width: 1.9rem
+    height: 1.9rem
+    right: 0.1rem
+    padding: 0.2rem 0
+    font-size: 1.9rem
+    color: #426389
+    background-color: $white
+  .mobile__settings
+    max-height: 90vh
+    & div.people
+      margin-left: -106%
+      transition: 0.3s
+    & div.chat
+      display: block
+  .chat
+    width: 90%
+    border-radius: 0
+    overflow: auto
+    display: none
+    &-header, &-write
+      border-radius: 0
+      & input
+        width: 100%
+  .message__wrapper
+    width: 100%
+    height: 90%
+
 @media screen and ( max-width: 964px)
+  .scroll::-webkit-scrollbar
+    width: 0
   .info
     &__bg > img
       margin-top: 1vw/1px

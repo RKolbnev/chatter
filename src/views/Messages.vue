@@ -1,6 +1,7 @@
 <template>
-  <div class="messages">
-    <div class="people ">
+  <div :class="['messages', {'mobile__settings': showMessages}]">
+    <i class="fa fa-comments messages__mobile" aria-hidden="true" @click="letShowMessages" ref="mobile"></i>
+    <div class="people">
 
       <div class="people-search">
         <input type="text" v-model="search" v-on:keyup.enter="searching"/>
@@ -60,7 +61,8 @@ export default {
       currentChatPerson: null,
       userInfo: this.$store.getters.getUserInfo,
       search: '',
-      searchResult: []
+      searchResult: [],
+      showMessages: false
     }
   },
   methods: {
@@ -78,6 +80,9 @@ export default {
         })
     },
     setCurrentChatPerson (person) {
+      if (window.getComputedStyle(this.$refs.mobile).display === 'block') {
+        this.$refs.mobile.click()
+      }
       person.roomID = person.roomID ?? `${this.userInfo.id}${person.chatPerson.id}`
       this.currentChatPerson = person
       this.$router.push(`/message/${person.roomID}`)
@@ -150,6 +155,9 @@ export default {
             })
           })
         })
+    },
+    letShowMessages () {
+      this.showMessages = !this.showMessages
     }
   },
   created () {
