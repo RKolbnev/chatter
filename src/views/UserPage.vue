@@ -1,4 +1,6 @@
 <template>
+<div class="user-scroll scroll">
+
   <div class="user" v-cloak>
     <div class="info border-top">
       <div class="info__bg border-top" >
@@ -36,12 +38,12 @@
       </div>
       <hr>
       <div class="wall-publics">
-        <div v-for="post in userInfo.publics" :key="post.id">
-          {{post.text}}
-          <span>
-            {{availableDate(post.timestamp)}}
-            <i class="fa fa-trash" aria-hidden="true" @click.stop="deletePublic(post.id)"></i>
-          </span>
+        <div class="public" v-for="post in userInfo.publics" :key="post.id">
+          <span>{{post.text}}</span>
+          <div>
+            <span>{{availableDate(post.timestamp)}}</span>
+            <i class="fa fa-trash" v-if="myPage" aria-hidden="true" @click.stop="deletePublic(post.id)"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -55,6 +57,7 @@
         :currentPosition="currentStyleForEdit"></app-change-photo>
     </teleport>
 
+  </div>
   </div>
 </template>
 
